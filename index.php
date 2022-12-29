@@ -6,14 +6,16 @@ $nombre = 12;
 $erreur = "";
 if (isset($_POST['submit']) && $_POST['submit']) {
     if (empty($_POST['centre'])) {
-        $erreur = "Veuillez mettre un chemin";
+        $erreur = "Veuillez mettre un nom de centre";
     } elseif (empty($_POST['annee'])) {
         $erreur = "Veuillez entrez une année";
     } else {
         $annee = $_POST['annee'];
         if ($annee <= 2010) {
             $erreur = "L'annee saisie est trop vieille veuillez entrez une année supérieur à 2010";
-        } else {
+        }elseif ($annee >= intval(date('Y'))) {
+            $erreur = "L'annee saisie est supérieur à celle d'aujourd'hui";
+        }else {
             $zip = new ZipArchive();
             $chemin = $_POST['centre'];
             for ($i = $annee; $i <= intval(date('Y')); $i++) {
@@ -44,7 +46,7 @@ $scans = scandir("./centres/");
 // Suppression des fichiers grace au nom
 if (isset($_GET['dossier']) && $_GET['dossier']) {
     unlink("centres/" . $_GET['dossier']);
-    header("Location: /creationDossier/");
+    header("Location: /");
 }
 ?>
 <!DOCTYPE html>
@@ -78,7 +80,7 @@ if (isset($_GET['dossier']) && $_GET['dossier']) {
         <div class="form">
             <?php if (!empty($erreur)) { ?>
                 <div class="error">
-                    <h3><?= $erreur ?></h3>
+                    <h3 class="font-bold"><?= $erreur ?></h3>
                 </div>
             <?php } ?>
             <h1>Créer une liste de dossiers</h1>
