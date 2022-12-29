@@ -81,7 +81,7 @@ if (isset($_GET['dossier']) && $_GET['dossier']) {
                     <h3><?= $erreur ?></h3>
                 </div>
             <?php } ?>
-            <h1>Créer une liste de dossier</h1>
+            <h1>Créer une liste de dossiers</h1>
             <form method="POST">
                 <div class="flex flex-col">
                     <label for="centre" class="label">Entrez le nom du centre</label>
@@ -99,7 +99,7 @@ if (isset($_GET['dossier']) && $_GET['dossier']) {
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="py-3 px-6">
-                            Dossier
+                            Dossiers
                         </th>
                         <th scope="col" class="py-3 px-6">
                             Action
