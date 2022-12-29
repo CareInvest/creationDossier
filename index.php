@@ -13,9 +13,9 @@ if (isset($_POST['submit']) && $_POST['submit']) {
         $annee = $_POST['annee'];
         if ($annee <= 2010) {
             $erreur = "L'annee saisie est trop vieille veuillez entrez une année supérieur à 2010";
-        }elseif ($annee >= intval(date('Y'))) {
+        } elseif ($annee >= intval(date('Y'))) {
             $erreur = "L'annee saisie est supérieur à celle d'aujourd'hui";
-        }else {
+        } else {
             $zip = new ZipArchive();
             $chemin = $_POST['centre'];
             for ($i = $annee; $i <= intval(date('Y')); $i++) {
@@ -104,6 +104,9 @@ if (isset($_GET['dossier']) && $_GET['dossier']) {
                             Dossiers
                         </th>
                         <th scope="col" class="py-3 px-6">
+                            Télécharger
+                        </th>
+                        <th scope="col" class="py-3 px-6">
                             Action
                         </th>
                     </tr>
@@ -114,6 +117,9 @@ if (isset($_GET['dossier']) && $_GET['dossier']) {
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="py-4 px-6">
                                     <?= $value ?>
+                                </td>
+                                <td class="py-4 px-6 text-right">
+                                    <a href="centres/<?= $value ?>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" download="">Télécharger</a>
                                 </td>
                                 <td class="py-4 px-6 text-right">
                                     <a href="?dossier=<?= $value ?>" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
