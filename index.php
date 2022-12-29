@@ -9,11 +9,11 @@ if (isset($_POST['submit']) && $_POST['submit']) {
         $erreur = "Veuillez mettre un chemin";
     } elseif (empty($_POST['annee'])) {
         $erreur = "Veuillez entrez une année";
-    } else {        
+    } else {
         $annee = $_POST['annee'];
         if ($annee <= 2010) {
             $erreur = "L'annee saisie est trop vieille veuillez entrez une année supérieur à 2010";
-        }else{
+        } else {
             $zip = new ZipArchive();
             $chemin = $_POST['centre'];
             for ($i = $annee; $i <= intval(date('Y')); $i++) {
@@ -37,6 +37,15 @@ if (isset($_POST['submit']) && $_POST['submit']) {
         }
     }
 }
+
+// Liste tout les fichiers
+$scans = scandir("./centres/");
+
+// Suppression des fichiers grace au nom
+if (isset($_GET['dossier']) && $_GET['dossier']) {
+    unlink("centres/" . $_GET['dossier']);
+    header("Location: /creationDossier/");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,10 +56,25 @@ if (isset($_POST['submit']) && $_POST['submit']) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/styles/style.css">
     <title>Création dossier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            h1 {
+                text-align: center;
+                color: #54aadf;
+                margin-bottom: 10px;
+                font-size: 32px;
+                font-weight: bold;
+            }
+            input[type=submit]{
+                background-color: #54aadf;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="containers">
         <div class="form">
             <?php if (!empty($erreur)) { ?>
                 <div class="error">
@@ -67,10 +91,38 @@ if (isset($_POST['submit']) && $_POST['submit']) {
                     <label for="annee" class="label">Indiquez l'année de début</label>
                     <input type="number" name="annee" required class="input" placeholder="2017">
                 </div>
-                <input type="submit" name="submit" class="btn">
+                <input type="submit" name="submit" class="button">
             </form>
+        </div>
+        <div class="overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="py-3 px-6">
+                            Dossier
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($scans as $key => $value) {
+                        if ($key !== 0 && $key !== 1) { ?>
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="py-4 px-6">
+                                    <?= $value ?>
+                                </td>
+                                <td class="py-4 px-6 text-right">
+                                    <a href="?dossier=<?= $value ?>" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
+                                </td>
+                            </tr>
+                    <?php }
+                    } ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
-<!-- Ajoute demain une fois télécharger la suppression du dossier -->
+
 </html>
